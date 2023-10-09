@@ -22,7 +22,7 @@ def say_hello():
     return f"Hello {name}!"
 
 @app.route('/goodbye', methods=['POST'])
-def goodbye():
+def say_goodbye():
     name = request.form['name']
     return f"Goodbye {name}!"
 
@@ -36,6 +36,15 @@ def thank_sender_for_message():
 def wave_at_sender():
     name = request.args['name']
     return f"I am waving at {name}"
+
+@app.route('/count_vowels', methods=['POST'])
+def count_vowels():
+    text = request.form['text']
+    number_of_vowels = 0
+    for char in text:
+        if char.lower() in "aeiou":
+            number_of_vowels += 1
+    return f"There are {number_of_vowels} vowels in \"{text}\""
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.
