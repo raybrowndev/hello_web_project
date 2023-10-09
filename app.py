@@ -46,6 +46,15 @@ def count_vowels():
             number_of_vowels += 1
     return f"There are {number_of_vowels} vowels in \"{text}\""
 
+@app.route('/sort-names', methods=['POST'])
+def sort_names():
+    names = request.form['names']
+    sorted_names = ",".join(
+        sorted(names.split(','))
+    )
+    return sorted_names
+
+
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.
 from example_routes import apply_example_routes

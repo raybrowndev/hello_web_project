@@ -51,3 +51,62 @@ def test_post_count_vowels_upper_and_lowercase(web_client):
     response = web_client.post('/count_vowels', data={'text': 'AEioUBcDfG'})
     assert response.status_code == 200
     assert response.data.decode('utf-8') == 'There are 5 vowels in "AEioUBcDfG"'
+
+
+"""
+When: I make a POST request to /sort-names
+And: I send a string containing comma-seperates names
+Then: I get a 200 response and string containing comma seperated names sort alphabetically
+EMPTY STRING
+"""
+def test_post_sort_names_empty_string(web_client):
+    response = web_client.post('/sort-names', data={'names': ""})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == ""
+
+"""
+When: I make a POST request to /sort-names
+And: I send a string containing comma-seperates names
+Then: I get a 200 response and string containing comma seperated names sort alphabetically
+STRING WITH ONE NAME
+"""
+
+def test_sort_names_one_name(web_client):
+    response = web_client.post('/sort-names', data={'names': "John"})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == "John"
+
+"""
+When: I make a POST request to /sort-names
+And: I send a string containing comma-seperates names
+Then: I get a 200 response and string containing comma seperated names sort alphabetically
+STRING WITH TWO NAMES IN CORRECT ORDER - RETURN SAME INPUT 
+"""
+
+def test_sort_names_two_names(web_client):
+    response = web_client.post('/sort-names', data={'names': "John,Mary"})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == "John,Mary"
+
+"""
+When: I make a POST request to /sort-names
+And: I send a string containing comma-seperates names
+Then: I get a 200 response and string containing comma seperated names sort alphabetically
+STRING WITH TWO NAMES IN REVERSE ORDER 
+"""
+def test_sort_names_two_names_reverse(web_client):
+    response = web_client.post('/sort-names', data={'names': "Mary,John"})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == "John,Mary"
+
+"""
+When: I make a POST request to /sort-names
+And: I send a string containing comma-seperates names
+Then: I get a 200 response and string containing comma seperated names sort alphabetically
+STRING MULTIPLE NAMES IN RANDOM ORDER - "Alice,Joe,Julia,Kieran,Zoe"
+"""
+
+def test_sort_names_multiple_names_random(web_client):
+    response = web_client.post('/sort-names', data={'names': "Joe,Alice,Zoe,Julia,Kieran"})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == "Alice,Joe,Julia,Kieran,Zoe"
