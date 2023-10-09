@@ -54,6 +54,16 @@ def sort_names():
     )
     return sorted_names
 
+@app.route('/names', methods=['GET'])
+def names():
+    all_names = ["Julia", "Alice", "Karim"]
+    to_add = request.args.get('add', None)
+    if to_add is None:
+        pass
+    else:
+        all_names.extend(to_add.split(","))
+    all_names.sort()
+    return ", ".join(all_names)
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.
