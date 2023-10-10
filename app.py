@@ -62,8 +62,8 @@ def names():
         pass
     else:
         all_names.extend(to_add.split(","))
-    all_names.sort()
     return ", ".join(all_names)
+
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.

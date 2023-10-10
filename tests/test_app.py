@@ -119,7 +119,7 @@ Then: I get a response of the pre-defined names sorted in alphabetical order
 def test_get_names_without_add_parameter(web_client):
     response = web_client.get('/names')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Julia, Karim"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim"
 
 """
 When: I make a GET request to /names
@@ -129,7 +129,7 @@ Then: I get a response containing "Eddie" in correct alphabetical order
 def test_get_names_with_one_additional_name(web_client):
     response = web_client.get('/names?add=Eddie')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Eddie, Julia, Karim"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim, Eddie"
 
 """
 When: I make a GET request to /names
@@ -139,7 +139,7 @@ Then: I get a response containing "Leo" in correct alphabetical order
 def test_get_names_with_one_additional_name_2(web_client):
     response = web_client.get('/names?add=Leo')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Julia, Karim, Leo"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim, Leo"
 
 """
 When: I make a GET request to /names
@@ -149,7 +149,7 @@ Then: I get a response of "Alice, Eddie, Julia, Karim, Leo"
 def test_get_names_with_two_additional_names(web_client):
     response = web_client.get('/names?add=Eddie,Leo')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Eddie, Julia, Karim, Leo"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim, Eddie, Leo"
 
 """
 When: I make a GET request to /names
@@ -159,14 +159,28 @@ Then: I get a response of "Alice, Eddie, Julia, Karim, Leo"
 def test_get_names_with_two_additional_names_2(web_client):
     response = web_client.get('/names?add=Leo,Eddie')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Eddie, Julia, Karim, Leo"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim, Leo, Eddie"
+
 
 """
-When: I make a GET request to /names
-And: I provide already existing pre-defined names
-Then: I get a response containing repeated names (as it's possible for two people to have the same first name)
+when: i request the path /names
+and: i use the method get
+the: i return a 200 response and the list of predefined names
+[Julia, Alice, Karim]
 """
-def test_get_names_with_repeated_predefined_names(web_client):
-    response = web_client.get('/names?add=Karim,Alice')
+
+def test_get_predefined_names(web_client):
+    response = web_client.get('/names')
     assert response.status_code == 200
-    assert response.data.decode('utf-8') == "Alice, Alice, Julia, Karim, Karim"
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim"
+
+"""
+when: i request the path /names?add=Alice
+and: i use the method GET
+then: i return a 200 response and the predefined names and the added name
+[Julia, Alice, Karim, Eddie]
+"""
+def test_get_predefined_names_and_added_names(web_client):
+    response = web_client.get('/names?add=Eddie', data={'add': "Eddie"})
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == "Julia, Alice, Karim, Eddie"
